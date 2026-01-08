@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Actividad interactiva para análisis de secciones de reportes empresariales">
+    <meta name="author" content="Ing. Juana Altagracia Paulino">
+    <title>Análisis de Secciones del Reporte Empresarial</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #2d0000 100%);
+            color: #ffffff;
+            padding: 10px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(139, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #dc143c;
+        }
+
+        .header h1 {
+            color: #dc143c;
+            font-size: clamp(1.3em, 5vw, 2.2em);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
+        }
+
+        .header h2 {
+            color: #ffffff;
+            font-size: clamp(0.9em, 3vw, 1.3em);
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: clamp(0.8em, 2.5vw, 1em);
+            opacity: 0.8;
+        }
+
+        .instructions {
+            background: rgba(220, 20, 60, 0.15);
+            border-left: 5px solid #dc143c;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .instructions h3 {
+            color: #dc143c;
+            margin-bottom: 12px;
+            font-size: clamp(1em, 3vw, 1.3em);
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            line-height: 1.8;
+            font-size: clamp(0.85em, 2.5vw, 1em);
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .pdf-download {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid #22c55e;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pdf-download h3 {
+            color: #22c55e;
+            margin-bottom: 10px;
+            font-size: clamp(1em, 3vw, 1.2em);
+        }
+
+        .pdf-download a {
+            display: inline-block;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+        }
+
+        .pdf-download a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+        }
+
+        .student-info {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .info-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-field label {
+            color: #dc143c;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: clamp(0.75em, 2.5vw, 0.9em);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-field input {
+            padding: 10px;
+            border: 2px solid rgba(220, 20, 60, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: clamp(0.85em, 2.5vw, 1em);
+            transition: all 0.3s ease;
+        }
+
+        .info-field input:focus {
+            outline: none;
+            border-color: #dc143c;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(220, 20, 60, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+            border: 2px solid rgba(220, 20, 60, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc143c 0%, #ff6b6b 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: clamp(0.75em, 2.5vw, 0.9em);
+        }
+
+        /* Tabla responsiva con scroll horizontal en móviles */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .analysis-table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .analysis-table thead {
+            background: linear-gradient(135deg, #8B0000 0%, #dc143c 100%);
+        }
+
+        .analysis-table th {
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: clamp(0.75em, 2vw, 0.95em);
+            color: #ffffff;
+        }
+
+        .analysis-table tbody tr {
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-table tbody tr:hover {
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .analysis-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .analysis-table td {
+            padding: 12px 8px;
+        }
+
+        .section-number {
+            background: #dc143c;
+            color: #ffffff;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: clamp(0.9em, 2.5vw, 1.1em);
+            margin: 0 auto;
+        }
+
+        .analysis-table input,
+        .analysis-table textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid rgba(220, 20, 60, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: clamp(0.8em, 2.5vw, 0.95em);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .analysis-table textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .analysis-table input:focus,
+        .analysis-table textarea:focus {
+            outline: none;
+            border-color: #dc143c;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(220, 20, 60, 0.3);
+        }
+
+        .analysis-table input::placeholder,
+        .analysis-table textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: clamp(0.85em, 2.5vw, 1em);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            flex: 1 1 auto;
+            min-width: 200px;
+            max-width: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc143c 0%, #8B0000 100%);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.5);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #ffffff;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .results-modal.show {
+            display: flex;
+        }
+
+        .results-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0000 100%);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 3px solid #dc143c;
+            box-shadow: 0 10px 50px rgba(220, 20, 60, 0.5);
+            animation: modalSlideIn 0.5s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .results-content h2 {
+            color: #dc143c;
+            font-size: clamp(1.5em, 5vw, 2.5em);
+            margin-bottom: 15px;
+        }
+
+        .score-display {
+            font-size: clamp(2.5em, 10vw, 4em);
+            font-weight: bold;
+            color: #ffffff;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(220, 20, 60, 0.8);
+        }
+
+        .score-details {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .score-details p {
+            margin: 8px 0;
+            font-size: clamp(0.9em, 2.5vw, 1.1em);
+            line-height: 1.6;
+        }
+
+        .correct-answers {
+            background: rgba(34, 197, 94, 0.15);
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .correct-answers h4 {
+            color: #22c55e;
+            margin-bottom: 10px;
+            font-size: clamp(0.95em, 2.5vw, 1.1em);
+        }
+
+        .correct-answers ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .correct-answers li {
+            padding: 5px 0;
+            color: #ffffff;
+            font-size: clamp(0.8em, 2.5vw, 0.95em);
+            line-height: 1.4;
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid #dc143c;
+            margin-top: 10px;
+        }
+
+        .btn-close:hover {
+            background: rgba(220, 20, 60, 0.2);
+        }
+
+        .tips {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px solid rgba(220, 20, 60, 0.3);
+        }
+
+        .tips h3 {
+            color: #dc143c;
+            margin-bottom: 12px;
+            font-size: clamp(1em, 3vw, 1.2em);
+        }
+
+        .tips ul {
+            margin-left: 20px;
+            line-height: 1.8;
+            font-size: clamp(0.85em, 2.5vw, 1em);
+        }
+
+        .tips li {
+            margin-bottom: 8px;
+        }
+
+        .tips strong {
+            color: #dc143c;
+        }
+
+        /* Media queries para mejor responsividad */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-table th,
+            .analysis-table td {
+                padding: 10px 6px;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 100%;
+                min-width: auto;
+            }
+
+            .results-content {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .instructions ul,
+            .tips ul {
+                margin-left: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                word-break: break-word;
+            }
+
+            .analysis-table {
+                min-width: 700px;
+            }
+
+            .section-number {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scroll hint para tablas */
+        .scroll-hint {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85em;
+            margin-top: 10px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-hint {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Análisis de Secciones del Reporte Empresarial</h1>
+            <h2>Módulo: Análisis y Diseño de Reportes</h2>
+            <p style="margin-top: 10px; opacity: 0.8;">Centro Educativo Nuestra Sra. De la Altagracia</p>
+        </div>
+
+        <div class="pdf-download">
+            <h3>📄 Paso 1: Descarga el Reporte</h3>
+            <p style="margin-bottom: 10px; font-size: clamp(0.85em, 2.5vw, 1em);">Descarga y lee el reporte empresarial antes de comenzar</p>
+            <a href="reporte_empresarial_rrhh.pdf" download>⬇️ Descargar Reporte PDF</a>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Instrucciones de la Actividad</h3>
+            <ul>
+                <li><strong>Paso 1:</strong> Descarga y abre el reporte empresarial en formato PDF</li>
+                <li><strong>Paso 2:</strong> Lee cuidadosamente cada sección del reporte</li>
+                <li><strong>Paso 3:</strong> Completa la tabla identificando: nombre de cada sección, su función específica y los elementos clave que contiene</li>
+                <li><strong>Paso 4:</strong> Utiliza Adobe Reader, PowerPoint o Word para marcar con colores las secciones en el PDF</li>
+                <li><strong>Paso 5:</strong> Al finalizar, haz clic en "Enviar Actividad" para ver tu puntuación</li>
+                <li><strong>Paso 6:</strong> Descarga el PDF con tus resultados</li>
+            </ul>
+        </div>
+
+        <div class="student-info">
+            <div class="info-field">
+                <label>Nombre del Estudiante:</label>
+                <input type="text" id="studentName" placeholder="Escribe tu nombre completo" required>
+            </div>
+            <div class="info-field">
+                <label>Curso:</label>
+                <input type="text" id="course" value="3ro de Secundaria" readonly>
+            </div>
+            <div class="info-field">
+                <label>Fecha:</label>
+                <input type="date" id="date">
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar">0%</div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px; text-align: center;">#</th>
+                        <th style="width: 20%;">Nombre de la Sección</th>
+                        <th style="width: 40%;">Función Específica</th>
+                        <th style="width: 40%;">Elementos Clave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">1</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section1" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section1"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section1"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">2</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section2" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section2"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section2"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">3</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section3" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section3"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section3"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">4</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section4" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section4"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section4"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">5</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section5" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section5"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section5"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">6</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section6" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section6"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section6"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">7</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section7" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section7"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section7"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">8</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section8" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section8"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section8"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><div class="section-number">9</div></td>
+                        <td><input type="text" placeholder="Escribe el nombre de la sección" data-section="section9" class="section-name"></td>
+                        <td><textarea placeholder="Describe cuál es la función de esta sección..." data-section="section9"></textarea></td>
+                        <td><textarea placeholder="Lista los elementos principales que contiene..." data-section="section9"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <p class="scroll-hint">👆 Desliza horizontalmente para ver toda la tabla</p>
+
+        <div class="button-container">
+            <button class="btn btn-primary" onclick="submitActivity()" id="submitBtn">📤 Enviar Actividad</button>
+            <button class="btn btn-download" onclick="downloadPDF()" id="downloadBtn">📥 Descargar PDF con Resultados</button>
+        </div>
+
+        <!-- Modal de Resultados -->
+        <div class="results-modal" id="resultsModal">
+            <div class="results-content">
+                <h2>🎯 Resultados de tu Actividad</h2>
+                <div class="score-display" id="scoreDisplay">0.0</div>
+                <p style="font-size: clamp(1em, 3vw, 1.2em); margin-bottom: 20px;">de 2 puntos</p>
+                
+                <div class="score-details" id="scoreDetails"></div>
+                
+                <div class="correct-answers" id="correctAnswers">
+                    <h4>✅ Respuestas Correctas:</h4>
+                    <ul id="answersList"></ul>
+                </div>
+
+                <button class="btn btn-download" onclick="downloadPDF()">📥 Descargar PDF con Resultados</button>
+                <button class="btn btn-close" onclick="closeModal()">Cerrar</button>
+            </div>
+        </div>
+
+        <div class="tips">
+            <h3>💡 Guía de Ayuda</h3>
+            <ul>
+                <li><strong>Portada:</strong> Presenta el título del reporte, datos de la empresa, fecha y autor</li>
+                <li><strong>Índice:</strong> Lista organizada del contenido con números de página</li>
+                <li><strong>Resumen Ejecutivo:</strong> Síntesis de los puntos más importantes del reporte</li>
+                <li><strong>Introducción:</strong> Contexto, objetivos y metodología del reporte</li>
+                <li><strong>Desarrollo/Cuerpo:</strong> Análisis detallado con datos, gráficos y explicaciones</li>
+                <li><strong>Conclusiones:</strong> Hallazgos principales derivados del análisis</li>
+                <li><strong>Recomendaciones:</strong> Sugerencias de acción basadas en las conclusiones</li>
+                <li><strong>Anexos:</strong> Material complementario (tablas, gráficos, documentos adicionales)</li>
+                <li><strong>Bibliografía:</strong> Referencias de las fuentes consultadas</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Establecer fecha actual
+        document.getElementById('date').valueAsDate = new Date();
+
+        // Respuestas correctas (case insensitive)
+        const correctAnswers = {
+            section1: ['portada', 'caratula', 'primera pagina', 'carátula', 'página de portada'],
+            section2: ['indice', 'índice', 'tabla de contenido', 'contenido'],
+            section3: ['resumen ejecutivo', 'resumen', 'ejecutivo', 'síntesis ejecutiva'],
+            section4: ['introduccion', 'introducción', 'intro'],
+            section5: ['desarrollo', 'cuerpo', 'desarrollo del tema', 'contenido principal'],
+            section6: ['conclusiones', 'conclusion', 'conclusión'],
+            section7: ['recomendaciones', 'recomendación', 'sugerencias'],
+            section8: ['anexos', 'anexo', 'apendice', 'apéndice'],
+            section9: ['bibliografia', 'bibliografía', 'referencias', 'fuentes']
+        };
+
+        const sectionNames = {
+            section1: 'Portada',
+            section2: 'Índice',
+            section3: 'Resumen Ejecutivo',
+            section4: 'Introducción',
+            section5: 'Desarrollo/Cuerpo',
+            section6: 'Conclusiones',
+            section7: 'Recomendaciones',
+            section8: 'Anexos',
+            section9: 'Bibliografía'
+        };
+
+        let studentScore = 0;
+        let studentAnswers = {};
+
+        // Función para calcular y actualizar el progreso
+        function updateProgress() {
+            const inputs = document.querySelectorAll('.analysis-table input, .analysis-table textarea');
+            const totalFields = inputs.length;
+            let filledFields = 0;
+
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    filledFields++;
+                }
+            });
+
+            const percentage = Math.round((filledFields / totalFields) * 100);
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+
+            return percentage;
+        }
+
+        // Actualizar progreso en tiempo real
+        document.querySelectorAll('.analysis-table input, .analysis-table textarea').forEach(input => {
+            input.addEventListener('input', updateProgress);
+        });
+
+        // Función para normalizar texto
+        function normalizeText(text) {
+            return text.toLowerCase().trim()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        // Función para verificar si la respuesta es correcta
+        function checkAnswer(section, answer) {
+            const normalized = normalizeText(answer);
+            return correctAnswers[section].some(correct => 
+                normalizeText(correct) === normalized || 
+                normalized.includes(normalizeText(correct)) ||
+                normalizeText(correct).includes(normalized)
+            );
+        }
+
+        // Función para enviar la actividad y calcular puntuación
+        function submitActivity() {
+            const studentName = document.getElementById('studentName').value.trim();
+            
+            if (!studentName) {
+                alert('Por favor, ingresa tu nombre antes de enviar la actividad.');
+                document.getElementById('studentName').focus();
+                return;
+            }
+
+            const percentage = updateProgress();
+            if (percentage < 100) {
+                if (!confirm('No has completado todos los campos. ¿Deseas enviar la actividad de todas formas?')) {
+                    return;
+                }
+            }
+
+            // Deshabilitar botón mientras se procesa
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span> Procesando...';
+
+            // Simular pequeña espera para feedback visual
+            setTimeout(() => {
+                // Calcular puntuación
+                studentScore = 0;
+                studentAnswers = {};
+                let correctCount = 0;
+
+                document.querySelectorAll('.section-name').forEach(input => {
+                    const section = input.getAttribute('data-section');
+                    const answer = input.value.trim();
+                    studentAnswers[section] = answer;
+
+                    if (checkAnswer(section, answer)) {
+                        studentScore += 2/9; // 2 puntos divididos entre 9 secciones
+                        correctCount++;
+                    }
+                });
+
+                // Redondear a 2 decimales
+                studentScore = Math.round(studentScore * 100) / 100;
+
+                // Mostrar resultados
+                showResults(correctCount);
+
+                // Rehabilitar botón
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '📤 Enviar Actividad';
+            }, 500);
+        }
+
+        // Función para mostrar el modal de resultados
+        function showResults(correctCount) {
+            const modal = document.getElementById('resultsModal');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreDetails = document.getElementById('scoreDetails');
+            const answersList = document.getElementById('answersList');
+
+            scoreDisplay.textContent = studentScore.toFixed(2);
+            
+            // Determinar mensaje según puntuación
+            let message = '';
+            let emoji = '';
+            if (studentScore >= 1.8) {
+                message = '¡Excelente trabajo! Dominas perfectamente las secciones del reporte.';
+                emoji = '🌟';
+            } else if (studentScore >= 1.4) {
+                message = '¡Muy bien! Tienes un buen conocimiento de las secciones.';
+                emoji = '👏';
+            } else if (studentScore >= 1.0) {
+                message = 'Buen intento. Revisa las secciones que no identificaste correctamente.';
+                emoji = '📚';
+            } else {
+                message = 'Necesitas repasar más las secciones del reporte empresarial.';
+                emoji = '💪';
+            }
+
+            scoreDetails.innerHTML = `
+                <p>${emoji} <strong>${message}</strong></p>
+                <p>📊 Secciones correctas: <strong>${correctCount} de 9</strong></p>
+                <p>⭐ Porcentaje: <strong>${Math.round((correctCount/9) * 100)}%</strong></p>
+            `;
+
+            // Mostrar respuestas correctas
+            answersList.innerHTML = '';
+            for (let i = 1; i <= 9; i++) {
+                const section = 'section' + i;
+                const li = document.createElement('li');
+                const studentAnswer = studentAnswers[section] || '(Sin respuesta)';
+                const isCorrect = checkAnswer(section, studentAnswer);
+                
+                li.innerHTML = `
+                    <strong>Sección ${i}:</strong> ${sectionNames[section]}
+                    ${isCorrect ? '✅' : '❌ Tu respuesta: ' + studentAnswer}
+                `;
+                answersList.appendChild(li);
+            }
+
+            modal.classList.add('show');
+            
+            // Scroll al top del modal
+            document.querySelector('.results-content').scrollTop = 0;
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            document.getElementById('resultsModal').classList.remove('show');
+        }
+
+        // Función para descargar PDF
+        function downloadPDF() {
+            const studentName = document.getElementById('studentName').value.trim();
+            
+            if (!studentName) {
+                alert('Por favor, ingresa tu nombre antes de descargar el PDF.');
+                document.getElementById('studentName').focus();
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const date = document.getElementById('date').value;
+            
+            // Configuración
+            const margin = 20;
+            const lineHeight = 7;
+            let yPos = margin;
+
+            // Título
+            doc.setFontSize(18);
+            doc.setTextColor(139, 0, 0);
+            doc.text('Analisis de Secciones del Reporte Empresarial', 105, yPos, { align: 'center' });
+            yPos += lineHeight * 2;
+
+            // Información del estudiante
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Estudiante: ${studentName}`, margin, yPos);
+            yPos += lineHeight;
+            doc.text(`Fecha: ${date}`, margin, yPos);
+            yPos += lineHeight;
+            doc.text(`Curso: 3ro de Secundaria`, margin, yPos);
+            yPos += lineHeight * 2;
+
+            // Puntuación
+            doc.setFontSize(16);
+            doc.setTextColor(139, 0, 0);
+            doc.text(`Puntuacion: ${studentScore.toFixed(2)} / 2 puntos`, margin, yPos);
+            yPos += lineHeight * 2;
+
+            // Respuestas del estudiante
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+            
+            for (let i = 1; i <= 9; i++) {
+                const section = 'section' + i;
+                const inputs = document.querySelectorAll(`[data-section="${section}"]`);
+                const sectionName = inputs[0].value.trim() || '(Sin respuesta)';
+                const funcion = inputs[1].value.trim() || '(Sin respuesta)';
+                const elementos = inputs[2].value.trim() || '(Sin respuesta)';
+                const isCorrect = checkAnswer(section, sectionName);
+
+                doc.setFontSize(12);
+                doc.setTextColor(139, 0, 0);
+                doc.text(`Seccion ${i}: ${isCorrect ? 'Correcto' : 'Incorrecto'}`, margin, yPos);
+                yPos += lineHeight;
+
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Nombre: ${sectionName}`, margin + 5, yPos);
+                yPos += lineHeight;
+                
+                doc.text(`Correcta: ${sectionNames[section]}`, margin + 5, yPos);
+                yPos += lineHeight;
+
+                const funcionLines = doc.splitTextToSize(`Funcion: ${funcion}`, 170);
+                doc.text(funcionLines, margin + 5, yPos);
+                yPos += funcionLines.length * lineHeight;
+
+                const elementosLines = doc.splitTextToSize(`Elementos: ${elementos}`, 170);
+                doc.text(elementosLines, margin + 5, yPos);
+                yPos += elementosLines.length * lineHeight + 3;
+
+                // Nueva página si es necesario
+                if (yPos > 270 && i < 9) {
+                    doc.addPage();
+                    yPos = margin;
+                }
+            }
+
+            // Descargar
+            const fileName = `Analisis_Reporte_${studentName.replace(/\s+/g, '_')}.pdf`;
+            doc.save(fileName);
+        }
+
+        // Prevenir pérdida de datos
+        window.addEventListener('beforeunload', function (e) {
+            const percentage = updateProgress();
+            if (percentage > 0 && percentage < 100) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('resultsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Tecla ESC para cerrar modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Inicializar progreso
+        updateProgress();
+
+        // Mensaje de bienvenida en consola
+        console.log('%c📊 Actividad de Análisis de Reportes', 'color: #dc143c; font-size: 20px; font-weight: bold;');
+        console.log('%c👩‍🏫 Desarrollado por: Ing. Juana Altagracia Paulino', 'color: #22c55e; font-size: 14px;');
+        console.log('%c🏫 Centro Educativo Nuestra Sra. De la Altagracia', 'color: #fff; font-size: 12px;');
+    </script>
+</body>
+</html>
